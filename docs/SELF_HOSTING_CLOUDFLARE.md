@@ -60,6 +60,8 @@ This provisions the D1 database, KV namespaces, and R2 bucket, applies the datab
 
 To manage the Access application yourself instead, set `TEAM_DOMAIN` (`https://your-team.cloudflareaccess.com`) and `POLICY_AUD` (the application's audience tag) in `.env.selfhost` — the deploy then provisions no Access resources.
 
+To serve a custom hostname, first create a self-hosted Cloudflare Access application for that exact hostname. Set `TEAM_DOMAIN`, `POLICY_AUD`, and `SELFHOST_DOMAIN` (for example `seo.example.com`) in `.env.selfhost`. The deploy attaches the hostname as a Worker Custom Domain and disables the public `workers.dev` URL. The hostname must be in a Cloudflare zone you control and must not already have a conflicting DNS record. Keep the Access application and its audience tag in sync with the Worker configuration.
+
 ## 5) Validate setup
 
 1. Open the Worker URL printed at the end of the deploy.
@@ -94,7 +96,7 @@ Everyone allowed through Cloudflare Access works in one shared workspace and see
 pnpm alchemy destroy --env-file .env.selfhost --stage selfhost
 ```
 
-This deletes the Workers, the stage-suffixed D1/KV/R2 resources (including your data), and the Access application.
+This deletes the Workers and stage-suffixed D1/KV/R2 resources (including your data). It also deletes an Access application provisioned by Alchemy; a hand-managed Access application remains in your account.
 
 ## Next steps
 

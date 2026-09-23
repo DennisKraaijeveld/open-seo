@@ -52,6 +52,12 @@ if (!env.DATAFORSEO_API_KEY) {
 // application) and needs neither ACCESS_ALLOWED_EMAILS nor the access:write
 // login scope.
 const managedAccess = !(env.TEAM_DOMAIN && env.POLICY_AUD);
+if (env.SELFHOST_DOMAIN && managedAccess) {
+  fail(
+    `${em("SELFHOST_DOMAIN")} requires a Cloudflare Access application for that hostname.`,
+    `Set both ${em("TEAM_DOMAIN")} and ${em("POLICY_AUD")} in ${envFile} before deploying.`,
+  );
+}
 if (managedAccess && !env.ACCESS_ALLOWED_EMAILS) {
   fail(
     `${em("ACCESS_ALLOWED_EMAILS")} is not set in ${envFile} — list who may sign in through`,
